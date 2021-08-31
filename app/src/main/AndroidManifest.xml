@@ -17,6 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoberMe">
         <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".JournalEntries" />
+        <activity android:name=".SobrietyDetails" />
+        <activity android:name=".JournalEntryActivity" />
+        <activity android:name=".PasswordResetActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity">
