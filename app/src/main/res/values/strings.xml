@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">Sober Me</string>
+    <string name="dialog_message">Welcome to Alert Dialog</string>
+    <string name="dialog_title">Sober Me</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="welcome_text">Hello,</string>
+    <string name="email">Email Address</string>
+    <string name="phone">Phone Number</string>
+    <string name="password">Password</string>
+    <string name="user_name">Username</string>
+    <string name="unit_cost">price of each unit</string>
+    <string name="units_consumed">number of units consumed in a day</string>
+    <string name="emergency_contact">Emergency Contact</string>
+    <string name="drinking_days">Number of days in a week you drunk</string>
+    <string name="quit_date">pick your quit date</string>
+    <string name="sign_up_with">Or sign up with</string>
+    <!--    actions-->
+    <string name="submit">submit</string>
+    <string name="do_not_have_account">Do not have an account?</string>
+    <string name="back">Back</string>
+    <string name="have_an_account">Already have an account?</string>
+    <string name="reset_password">Reset password</string>
+    <string name="verify_email">Email verification</string>
+    <string name="add_journal">Add journal</string>
+    <string name="write_something">Write something here....</string>
+    <string name="how_you_feeling_today">How are you feeling today?</string>
+    <string name="login_text">Log in to your account</string>
+    <string name="register_text">Create your account</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="daily_savings">Daily savings</string>
+    <string name="total_savings">total savings</string>
+    <string name="projected_annual">projected annual</string>
+    <string name="your_have_been_sober_for">Your have been sober for</string>
+    <string name="call_emergency_contact">call emergency contact</string>
+    <string name="reset_sobriety">reset sobriety</string>
+    <string name="title_activity_drawer">DrawerActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="enter_message">enter message</string>
+    <string name="send">send</string>
+
+</resources>

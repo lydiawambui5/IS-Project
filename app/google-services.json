@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "973744482729",
+    "project_id": "soberme-2fa1d",
+    "storage_bucket": "soberme-2fa1d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:973744482729:android:eeebe36fa57bce3b497cb8",
+        "android_client_info": {
+          "package_name": "com.example.soberme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "973744482729-hhis1j8g01hv16ejmk6j73ef3qhi324n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZDpOEdu37az9t_aRDxHajFQOh_CRyu7g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "973744482729-hhis1j8g01hv16ejmk6j73ef3qhi324n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
