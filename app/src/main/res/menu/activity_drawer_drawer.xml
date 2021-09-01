@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/ic_group"
+            android:title="@string/group_chat"/>
+
+
+        <item
+            android:title="Journals">
+            <menu>
+                <group
+                    android:id="@+id/menu_center"
+                    android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_add_journal"
+                        android:icon="@drawable/ic_add"
+                        android:title="@string/add_journal" />
+                    <item
+                        android:id="@+id/nav_view_journal"
+                        android:icon="@drawable/ic_journal_view"
+                        android:title="@string/view_journals" />
+                </group>
+            </menu>
+        </item>
+        <item
+            android:title="account">
+            <menu>
+                <group
+                    android:id="@+id/menu_bottom"
+                    android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_view_account"
+                        android:icon="@drawable/ic_person"
+                        android:title="@string/view_account" />
+
+
+                    <item
+                        android:id="@+id/nav_reset_password"
+                        android:icon="@drawable/ic_lock"
+                        android:title="@string/reset_password" />
+                    <item
+                        android:id="@+id/nav_log_out"
+                        android:icon="@drawable/ic_sign_out"
+                        android:title="@string/sign_out" />
+                </group>
+            </menu>
+        </item>
+        <item
+            android:title="sobriety">
+            <menu>
+                <group
+                    android:id="@+id/menu_sobriety"
+                    android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_reset_sobriety"
+                        android:icon="@drawable/ic_person"
+                        android:title="@string/reset_sobriety" />
+
+
+                </group>
+            </menu>
+        </item>
+
+    </group>
+</menu>

@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +15,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,6 +30,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,7 +40,16 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,12 +72,12 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView profile_image;
     private String currentDate,currentDateTime;
     private  SimpleDateFormat sdf;
-    private TextView username,dailySavings,totalSavings,projectedSavings,unitsNotConsumed,motivationText,dateView,soberDateCount;
+    private TextView  navUsername ,username,dailySavings,totalSavings,projectedSavings,unitsNotConsumed,motivationText,dateView,soberDateCount;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.nav_activity_main);
 
         dailySavings=findViewById(R.id.daily_savings);
         totalSavings=findViewById(R.id.total_savings);
@@ -71,16 +85,12 @@ public class MainActivity extends AppCompatActivity {
         unitsNotConsumed=findViewById(R.id.unitsNotConsumed);
         soberDateCount=findViewById(R.id.soberDaysCount);
         motivationText=findViewById(R.id.motivation_text);
-        chatBtn=findViewById(R.id.chat_btn);
         dateView=findViewById(R.id.dateView);
         profile_image=findViewById(R.id.profile_image);
         username=findViewById(R.id.username);
-        signOutBtn = findViewById(R.id.sign_out_btn);
+
         floatingActionButton=findViewById(R.id.floating_action_button);
-        resetPasswordBtn = findViewById(R.id.reset_password);
-        sobrietyResetBtn=findViewById(R.id.sobriety_reset);
-        addJournal=findViewById(R.id.add_journal);
-        viewJournals=findViewById(R.id.view_journals);
+
 
         sdf = new SimpleDateFormat("dd/MM/yyyy");
         currentDate = sdf.format(new Date());
@@ -92,70 +102,92 @@ public class MainActivity extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         fStorage = FirebaseStorage.getInstance();
         Calendar calendar = Calendar.getInstance();
-        chatBtn.setOnClickListener(view->{
-            startActivity(new Intent(this, ChatActivity.class));
-        });
-        viewJournals.setOnClickListener(view->{
-            startActivity(new Intent(this, JournalEntries.class));
+
+        NavigationView navigationView=findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+         navUsername = (TextView) headerView.findViewById(R.id.navUserName);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+                if(item.getItemId()==R.id.nav_home){
+
+                }else if(item.getItemId()==R.id.nav_log_out){
+                    logOut();
+                }else if(item.getItemId()==R.id.nav_reset_password){
+                    startActivity(new Intent(MainActivity.this, PasswordResetActivity.class));
+                }
+                else if(item.getItemId()==R.id.nav_view_account){
+                    startActivity(new Intent(MainActivity.this, userProfileActivity.class));
+                }
+                else if(item.getItemId()==R.id.nav_add_journal){
+                    startActivity(new Intent(MainActivity.this, JournalEntryActivity.class));
+                }else if(item.getItemId()==R.id.nav_view_journal){
+                    startActivity(new Intent(MainActivity.this, JournalEntries.class));
+                }
+                else if(item.getItemId()==R.id.nav_chat){
+                    startActivity(new Intent(MainActivity.this, ChatActivity.class));
+                }
+                else if(item.getItemId()==R.id.nav_reset_sobriety){
+                  resetSobriety();
+                }
+
+
+                DrawerLayout drawerLayout=findViewById(R.id.drawer_layout);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
         });
 
-        sobrietyResetBtn.setOnClickListener(view->{
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle(R.string.dialog_title);
-            alertDialogBuilder.setMessage("Are you sure you want to reset your sobriety?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            String userId = mAuth.getUid();
-                            DocumentReference docRef = fStore.collection("users").document(userId);
-                            docRef
 
-                                    .update(
-                                            "soberDateSet", false,
-                                            "sobrietyResetCount", FieldValue.increment(1)
-                                    )
-
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            Toast.makeText(MainActivity.this, "User has reset sobriety status", Toast.LENGTH_SHORT).show();
-                                            dialog.cancel();
-                                            finish();
-                                            startActivity(getIntent());
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Snackbar.make(findViewById(R.id.myCoordinatorLayout), "Error updating user details",
-                                                    Snackbar.LENGTH_SHORT)
-                                                    .show();
-                                        }
-                                    });
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            //  Action for 'NO' Button
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alert = alertDialogBuilder.create();
-            //Setting the title manually
-            alert.show();
-
-        });
-        addJournal.setOnClickListener(view->{
-            startActivity(new Intent(this, JournalEntryActivity.class));
-
-        });
-        resetPasswordBtn.setOnClickListener(view -> {
-            startActivity(new Intent(this, PasswordResetActivity.class));
-        });
-        signOutBtn.setOnClickListener(view -> {
-            logOut();
-        });
     }
+
+    private void resetSobriety() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(R.string.dialog_title);
+        alertDialogBuilder.setMessage("Are you sure you want to reset your sobriety?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String userId = mAuth.getUid();
+                        DocumentReference docRef = fStore.collection("users").document(userId);
+                        docRef
+
+                                .update(
+                                        "soberDateSet", false,
+                                        "sobrietyResetCount", FieldValue.increment(1)
+                                )
+
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(MainActivity.this, "User has reset sobriety status", Toast.LENGTH_SHORT).show();
+                                        dialog.cancel();
+                                        finish();
+                                        startActivity(getIntent());
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Snackbar.make(findViewById(R.id.myCoordinatorLayout), "Error updating user details",
+                                                Snackbar.LENGTH_SHORT)
+                                                .show();
+                                    }
+                                });
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Action for 'NO' Button
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        //Setting the title manually
+        alert.show();
+    }
+
     private void logOut() {
         FirebaseAuth.getInstance().signOut();
         finish();
@@ -182,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                             profile_image.setImageResource(R.mipmap.ic_launcher);
                             username.setText(document.getString("userName"));
+                            navUsername.setText(document.getString("userName"));
                             boolean soberDateSet= document.getBoolean("soberDateSet");
                             if (soberDateSet==true){
                                 Long unitPrice=document.getLong("unitPrice");
